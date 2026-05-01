@@ -79,7 +79,7 @@ volumes:
 networks:
   transit-net:
     driver: bridge
-
+```
 ## 🚀 Instalación Rápida
 
 **1. Clonar el repositorio:**
