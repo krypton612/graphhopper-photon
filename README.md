@@ -141,7 +141,7 @@ http://localhost:2322/api?q=La+Paz
 
 ## ⚙️ Configuración de Memoria
 
-Por defecto, ambos contenedores están configurados con un límite de **4GB de RAM**. Puedes ajustar esto en el archivo `docker-compose.yml`:
+Por defecto, ambos contenedores están configurados con un límite de **4GB de RAM**. Puedes ajustar esto en el archivo `docker-compose.yml`, puede integrarse con [MapLibre](https://github.com/maplibre/maplibre-navigation-android) y tambien con [OpenStreetMap](https://github.com/osmdroid/osmdroid):
 
 ```yaml
 environment:
