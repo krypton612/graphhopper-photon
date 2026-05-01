@@ -110,11 +110,11 @@ docker compose up -d --build
 **Test de Ruteo:**
 ```
 http://localhost:8989/route?point=-16.489,-68.119&point=-16.495,-68.123&profile=car
-
+```
 **Test de Búsqueda:**
 ```
 http://localhost:2322/api?q=La+Paz
-
+```
 ---
 
 ## 📖 Documentación Oficial
