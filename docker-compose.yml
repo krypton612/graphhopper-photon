@@ -1,0 +1,55 @@
+services:
+  graphhopper:
+    build: graphhopper/
+    container_name: graphhopper_bolivia
+    ports:
+      - "8989:8989"
+    volumes:
+      - gh_data:/app/graph-cache
+      - gh_logs:/app/logs
+    environment:
+      - JAVA_OPTS=-Xmx4g -Xms2g
+    networks:
+      - transit-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8989/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  photon:
+    build: photon/
+    container_name: photon_bolivia
+    ports:
+      - "2322:2322"
+    volumes:
+      - photon_db:/app/photon_data
+    environment:
+      - JAVA_OPTS=-Xmx4g -Xms2g
+    networks:
+      - transit-net
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - |
+          STATUS=$(cat /app/photon_data/.status 2>/dev/null || echo 'unknown')
+          if [ "$STATUS" = "importing" ] || [ "$STATUS" = "starting" ]; then
+            echo "Photon aún no listo: $STATUS" && exit 1
+          fi
+          wget -qO- "http://localhost:2322/api?q=cochabamba&limit=1" > /dev/null 2>&1
+      interval: 20s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
+
+volumes:
+  gh_data:
+  gh_logs:
+  photon_db:
+
+networks:
+  transit-net:
+    driver: bridge
